@@ -2,18 +2,19 @@
     import PlasmaGrid from "$lib/motion-core/plasma-grid/PlasmaGrid.svelte";
     import { onMount } from "svelte";
     import * as Carousel from "$lib/components/ui/carousel/index.js";
-
+    import SplitReveal from "$lib/motion-core/split-reveal/SplitReveal.svelte";
+    import TextLoop from "$lib/motion-core/text-loop/TextLoop.svelte";
 
     const COLOR_PRESETS = {
-            dark: {
-                color: "#18181B",
-                highlightColor: "#572400",
-            },
-            light: {
-                color: "#FFFFFF",
-                highlightColor: "#FF6900",
-            },
-        };
+        dark: {
+            color: "#18181B",
+            highlightColor: "#572400",
+        },
+        light: {
+            color: "#FFFFFF",
+            highlightColor: "#FF6900",
+        },
+    };
     const projects = [
         {
             title: "Portfolio Website",
@@ -39,7 +40,7 @@
             thumbnail: "/logo.svg",
         },
     ];
-    
+
     let isDark = $state(true);
     let scrollProgress = $state(0);
 
@@ -64,9 +65,9 @@
     };
 
     onMount(() => {
-              isDark = document.documentElement.classList.contains("dark");
+        isDark = document.documentElement.classList.contains("dark");
         const observer = new MutationObserver(() => {
-          isDark = document.documentElement.classList.contains("dark");
+            isDark = document.documentElement.classList.contains("dark");
         });
 
         observer.observe(document.documentElement, {
@@ -89,6 +90,7 @@
 
     const heroOpacity = $derived(mapRange(scrollProgress, 0, 1, 1, 0));
     const heroScale = $derived(mapRange(scrollProgress, 0, 1, 1, 0.82));
+    const plasmaOpacity = $derived(clamp(heroOpacity * 100, 20, 100));
 
     const contentOpacity = $derived(mapRange(scrollProgress, 0.72, 1, 0, 1));
     const contentScale = $derived(mapRange(scrollProgress, 0.72, 1, 0.92, 1));
@@ -112,13 +114,11 @@
 </svelte:head>
 
 <PlasmaGrid
-    color={isDark ? COLOR_PRESETS.dark.color : COLOR_PRESETS.light.color}
-    highlightColor={isDark
-        ? COLOR_PRESETS.dark.highlightColor
-        : COLOR_PRESETS.light.highlightColor}
-    class="fixed inset-0 z-0 h-screen w-screen"
+    color={COLOR_PRESETS.dark.color}
+    highlightColor={COLOR_PRESETS.dark.highlightColor}
+    class={`fixed inset-0 z-10 h-screen w-screen opacity-${plasmaOpacity}`}
 />
-<div class="relative">
+<div class="relative dark bg-background">
     <header
         class="fixed top-0 left-0 right-0 z-30 flex items-center justify-center"
         style="
@@ -165,26 +165,25 @@
                                 padding-inline: calc(var(--spacing) * 6);
                             "
                         >
-                            <h1
-                                class="text-center font-light leading-[0.95] text-foreground"
+                            <SplitReveal
+                                mode="lines"
+                                class="text-center font-light leading-[0.80] text-foreground"
                                 style="
                                     font-family: var(--font-serif);
                                     font-size: clamp(3.5rem, 12vw, 10rem);
                                     letter-spacing: -0.025em;
                                 "
                             >
-                                Yassine
-                            </h1>
-                            <h1
-                                class="text-center font-light leading-[0.95] text-foreground"
-                                style="
-                                    font-family: var(--font-serif);
-                                    font-size: clamp(1.75rem, 12vw, 5rem);
-                                    letter-spacing: -0.025em;
-                                "
-                            >
-                                Akhouayri
-                            </h1>
+                                Yassine<br />
+                                <span
+                                    class="text-center font-light text-foreground"
+                                    style="
+                                        font-family: var(--font-serif);
+                                        font-size: clamp(1.75rem, 12vw, 5rem);
+                                        letter-spacing: -0.025em;
+                                    ">Akhouayri</span
+                                >
+                            </SplitReveal>
                         </div>
 
                         <blockquote
@@ -195,13 +194,17 @@
                             "
                         >
                             <h2
-                                class="text-center font-bold text-foreground"
+                                class="text-left text-xs font-bold text-foreground"
                                 style="
                                     font-family: var(--font-serif);
                                     font-size: 3.5rem;
                                 "
                             >
-                                Based in Montreal, Canada
+                                A collection of <TextLoop
+                                    class="text-accent"
+                                    texts={["projects", "ideas", "experiments"]}
+                                    interval={1000}
+                                /> <br /> by Yassine.
                             </h2>
                         </blockquote>
                     </section>
@@ -234,7 +237,9 @@
                     gap: calc(var(--spacing) * 5);
                 "
             >
-                <h2
+                <SplitReveal
+                    triggerOnScroll={true}
+                    mode="chars"
                     class="font-light leading-none text-foreground"
                     style="
                                         font-family: var(--font-serif);
@@ -243,52 +248,50 @@
                                     "
                 >
                     About me
-                </h2>
+                </SplitReveal>
             </div>
-            <p
+            <SplitReveal
+                triggerOnScroll={true}
+                delay={0.2}
+                lines.duration={0.02}
+                mode="lines"
                 class="text-left"
                 style="
-                    width: calc(var(--spacing) * 200);
-                    font-size: 1.25rem;
-                    color: var(--foreground);
-                "
+                                  width: calc(var(--spacing) * 200);
+                                  font-size: 1.25rem;
+                                  color: var(--foreground);
+                              "
             >
                 Hi, I'm Yassine Akhouayri. I'm 18 years old and currently living
                 in Montreal, Canada. I’ve always been curious about how
                 technology works and how complex systems are built, which
                 naturally led me to programming.
-                <br />
-                <br />
+                <div class="h-10"></div>
 
                 I started learning to code on my own a few years ago. What began
                 as simple curiosity quickly turned into something I spent more
                 and more time exploring. Everything I know about programming so
                 far has been self-taught through documentation, online
                 resources, and a lot of experimentation.
-                <br />
-                <br />
+                <div class="h-10"></div>
 
                 Most of what I learn comes from building things. I like taking
                 an idea and turning it into a real project, figuring out
                 problems along the way and improving the system step by step.
                 That process of designing, debugging, and refining software is
                 what I enjoy the most.
-                <br />
-                <br />
+                <div class="h-10"></div>
 
                 In the near future, I plan to study electrical engineering to
                 better understand the hardware and systems that power modern
                 computing. I'm particularly interested in the relationship
                 between software and the underlying technology it runs on.
-                <br />
-                <br />
+                <div class="h-10"></div>
 
                 Outside of programming, I spend a lot of time learning new
                 technologies, experimenting with ideas, and working on side
                 projects to push my skills further.
-                <br />
-                <br />
-            </p>
+            </SplitReveal>
         </section>
 
         <section
@@ -311,17 +314,22 @@
                         gap: calc(var(--spacing) * 5);
                     "
                 >
-                    <h2
+                    <SplitReveal
+                        triggerOnScroll={true}
+                        mode="chars"
                         class="font-light leading-none text-foreground"
                         style="
-                            font-family: var(--font-serif);
-                            font-size: clamp(3rem, 8vw, 5.5rem);
-                            letter-spacing: -0.025em;
-                        "
+                                            font-family: var(--font-serif);
+                                            font-size: clamp(2.25rem, 5vw, 3.5rem);
+                                            letter-spacing: -0.025em;
+                                        "
                     >
                         My work
-                    </h2>
-                    <p
+                    </SplitReveal>
+                    <SplitReveal
+                        triggerOnScroll={true}
+                        delay={0.2}
+                        mode="lines"
                         class="text-muted-foreground"
                         style="
                             max-width: 36rem;
@@ -333,7 +341,7 @@
                         software systems. Most of what I create comes from
                         curiosity and the desire to experiment, learn, and
                         gradually refine how I design and build things.
-                    </p>
+                    </SplitReveal>
                 </div>
 
                 <div class="flex justify-center">
@@ -401,6 +409,136 @@
                                 margin-top: calc(var(--spacing) * 8);
                                 gap: calc(var(--spacing) * 4);
                             "
+                        >
+                            <Carousel.Previous
+                                class="static translate-y-0"
+                                size="icon-lg"
+                                variant="outline"
+                            />
+                            <Carousel.Next
+                                class="static translate-y-0"
+                                size="icon-lg"
+                                variant="outline"
+                            />
+                        </div>
+                    </Carousel.Root>
+                </div>
+            </div>
+        </section>
+
+        <section
+            class="min-h-screen"
+            style="
+                     margin-top: calc(var(--spacing) * 200);
+                     padding-inline: calc(var(--spacing) * 10);
+                     padding-block: calc(var(--spacing) * 24);
+                 "
+        >
+            <div
+                class="mx-auto flex w-full max-w-7xl flex-col"
+                style="
+                         gap: calc(var(--spacing) * 10);
+                     "
+            >
+                <div
+                    class="flex flex-col items-center"
+                    style="
+                             gap: calc(var(--spacing) * 5);
+                         "
+                >
+                    <SplitReveal
+                        triggerOnScroll={true}
+                        mode="chars"
+                        class="font-light leading-none text-foreground"
+                        style="
+                                                 font-family: var(--font-serif);
+                                                 font-size: clamp(2.25rem, 5vw, 3.5rem);
+                                                 letter-spacing: -0.025em;
+                                             "
+                    >
+                        My tools
+                    </SplitReveal>
+                    <SplitReveal
+                        triggerOnScroll={true}
+                        delay={0.2}
+                        mode="lines"
+                        class="text-muted-foreground"
+                        style="
+                                 max-width: 36rem;
+                                 font-size: 1rem;
+                             "
+                    >
+                        The tools I use to build and experiment with software,
+                        from programming languages and frameworks to the editor
+                        and utilities that shape my development workflow.
+                    </SplitReveal>
+                </div>
+
+                <div class="flex justify-center">
+                    <Carousel.Root
+                        opts={{
+                            align: "start",
+                            loop: false,
+                        }}
+                        class="w-full max-w-6xl"
+                    >
+                        <Carousel.Content class="-ms-4">
+                            {#each projects as project}
+                                <Carousel.Item
+                                    class="ps-4 md:basis-1/2 xl:basis-1/3"
+                                >
+                                    <article
+                                        class="overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+                                        style="
+                                                 border-radius: var(--radius-xl);
+                                                 border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+                                                 background: color-mix(in oklab, var(--background) 70%, transparent);
+                                                 box-shadow: var(--shadow-sm);
+                                                 backdrop-filter: blur(calc(var(--spacing) * 1));
+                                             "
+                                    >
+                                        <div
+                                            class="aspect-16/10 overflow-hidden"
+                                            style="
+                                                     background: var(--muted);
+                                                 "
+                                        >
+                                            <img
+                                                src={project.thumbnail}
+                                                alt={project.title}
+                                                class="h-full w-full object-cover"
+                                            />
+                                        </div>
+
+                                        <div
+                                            class="flex flex-col"
+                                            style="
+                                                     gap: calc(var(--spacing) * 3);
+                                                     padding: calc(var(--spacing) * 6);
+                                                 "
+                                        >
+                                            <h3
+                                                class="text-xl font-semibold text-foreground"
+                                            >
+                                                {project.title}
+                                            </h3>
+                                            <p
+                                                class="text-sm leading-6 text-muted-foreground"
+                                            >
+                                                {project.description}
+                                            </p>
+                                        </div>
+                                    </article>
+                                </Carousel.Item>
+                            {/each}
+                        </Carousel.Content>
+
+                        <div
+                            class="flex items-center justify-center"
+                            style="
+                                     margin-top: calc(var(--spacing) * 8);
+                                     gap: calc(var(--spacing) * 4);
+                                 "
                         >
                             <Carousel.Previous
                                 class="static translate-y-0"
