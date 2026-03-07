@@ -3,17 +3,17 @@
     import { onMount } from "svelte";
     import * as Carousel from "$lib/components/ui/carousel/index.js";
 
-    const COLOR_PRESETS = {
-        dark: {
-            color: "#18181B",
-            highlightColor: "#572400",
-        },
-        light: {
-            color: "#FFFFFF",
-            highlightColor: "#FF6900",
-        },
-    };
 
+    const COLOR_PRESETS = {
+            dark: {
+                color: "#18181B",
+                highlightColor: "#572400",
+            },
+            light: {
+                color: "#FFFFFF",
+                highlightColor: "#FF6900",
+            },
+        };
     const projects = [
         {
             title: "Portfolio Website",
@@ -39,7 +39,7 @@
             thumbnail: "/logo.svg",
         },
     ];
-
+    
     let isDark = $state(true);
     let scrollProgress = $state(0);
 
@@ -64,10 +64,9 @@
     };
 
     onMount(() => {
-        isDark = document.documentElement.classList.contains("dark");
-
+              isDark = document.documentElement.classList.contains("dark");
         const observer = new MutationObserver(() => {
-            isDark = document.documentElement.classList.contains("dark");
+          isDark = document.documentElement.classList.contains("dark");
         });
 
         observer.observe(document.documentElement, {
@@ -119,12 +118,22 @@
         : COLOR_PRESETS.light.highlightColor}
     class="fixed inset-0 z-0 h-screen w-screen"
 />
-
 <div class="relative">
     <header
-        class="fixed top-0 left-0 right-0 z-30 flex items-center justify-center px-6 py-3"
+        class="fixed top-0 left-0 right-0 z-30 flex items-center justify-center"
+        style="
+            padding-inline: calc(var(--spacing) * 6);
+            padding-block: calc(var(--spacing) * 3);
+        "
     >
-        <img src="/logo.svg" alt="yka." style="height: 116px; width: auto;" />
+        <img
+            src="/logo.svg"
+            alt="yka."
+            style="
+                height: calc(var(--spacing) * 29);
+                width: auto;
+            "
+        />
     </header>
 
     <div class="relative min-h-[200vh]">
@@ -140,16 +149,26 @@
                 `}
             >
                 <div
-                    class="flex w-full max-w-7xl min-h-screen flex-col px-8 pt-32"
+                    class="flex min-h-screen w-full max-w-7xl flex-col"
+                    style="
+                        padding-inline: calc(var(--spacing) * 8);
+                        padding-top: calc(var(--spacing) * 32);
+                    "
                 >
                     <section
                         class="relative flex flex-1 items-center justify-center overflow-hidden"
                     >
-                        <div class="-mt-60 select-none px-6 text-center">
+                        <div
+                            class="select-none text-center"
+                            style="
+                                margin-top: calc(var(--spacing) * -60);
+                                padding-inline: calc(var(--spacing) * 6);
+                            "
+                        >
                             <h1
                                 class="text-center font-light leading-[0.95] text-foreground"
                                 style="
-                                    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+                                    font-family: var(--font-serif);
                                     font-size: clamp(3.5rem, 12vw, 10rem);
                                     letter-spacing: -0.025em;
                                 "
@@ -159,7 +178,7 @@
                             <h1
                                 class="text-center font-light leading-[0.95] text-foreground"
                                 style="
-                                    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+                                    font-family: var(--font-serif);
                                     font-size: clamp(1.75rem, 12vw, 5rem);
                                     letter-spacing: -0.025em;
                                 "
@@ -169,12 +188,16 @@
                         </div>
 
                         <blockquote
-                            class="absolute bottom-10 left-10 text-muted-foreground"
+                            class="absolute text-muted-foreground"
+                            style="
+                                bottom: calc(var(--spacing) * 10);
+                                left: calc(var(--spacing) * 10);
+                            "
                         >
                             <h2
                                 class="text-center font-bold text-foreground"
                                 style="
-                                    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+                                    font-family: var(--font-serif);
                                     font-size: 3.5rem;
                                 "
                             >
@@ -198,13 +221,23 @@
         `}
     >
         <section
-            class="flex flex-col min-h-screen items-center justify-center px-10 py-20 md:px-16 gap-10"
+            class="flex min-h-screen flex-col items-center justify-center"
+            style="
+                gap: calc(var(--spacing) * 10);
+                padding-inline: calc(var(--spacing) * 10);
+                padding-block: calc(var(--spacing) * 20);
+            "
         >
-            <div class="space-y-3 flex flex-col items-center gap-5">
+            <div
+                class="flex flex-col items-center"
+                style="
+                    gap: calc(var(--spacing) * 5);
+                "
+            >
                 <h2
                     class="font-light leading-none text-foreground"
                     style="
-                                        font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+                                        font-family: var(--font-serif);
                                         font-size: clamp(2.25rem, 5vw, 3.5rem);
                                         letter-spacing: -0.025em;
                                     "
@@ -212,7 +245,14 @@
                     About me
                 </h2>
             </div>
-            <p class="text-left w-200 text-xl">
+            <p
+                class="text-left"
+                style="
+                    width: calc(var(--spacing) * 200);
+                    font-size: 1.25rem;
+                    color: var(--foreground);
+                "
+            >
                 Hi, I'm Yassine Akhouayri. I'm 18 years old and currently living
                 in Montreal, Canada. I’ve always been curious about how
                 technology works and how complex systems are built, which
@@ -251,13 +291,30 @@
             </p>
         </section>
 
-        <section class="min-h-screen px-10 py-24 md:px-16 mt-200">
-            <div class="mx-auto flex w-full max-w-7xl flex-col gap-10">
-                <div class="space-y-3 flex flex-col items-center gap-5">
+        <section
+            class="min-h-screen"
+            style="
+                margin-top: calc(var(--spacing) * 200);
+                padding-inline: calc(var(--spacing) * 10);
+                padding-block: calc(var(--spacing) * 24);
+            "
+        >
+            <div
+                class="mx-auto flex w-full max-w-7xl flex-col"
+                style="
+                    gap: calc(var(--spacing) * 10);
+                "
+            >
+                <div
+                    class="flex flex-col items-center"
+                    style="
+                        gap: calc(var(--spacing) * 5);
+                    "
+                >
                     <h2
                         class="font-light leading-none text-foreground"
                         style="
-                            font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+                            font-family: var(--font-serif);
                             font-size: clamp(3rem, 8vw, 5.5rem);
                             letter-spacing: -0.025em;
                         "
@@ -265,7 +322,11 @@
                         My work
                     </h2>
                     <p
-                        class="max-w-xl text-sm text-muted-foreground md:text-base"
+                        class="text-muted-foreground"
+                        style="
+                            max-width: 36rem;
+                            font-size: 1rem;
+                        "
                     >
                         My work focuses on building projects that help me
                         explore new ideas and improve my understanding of
@@ -289,10 +350,20 @@
                                     class="ps-4 md:basis-1/2 xl:basis-1/3"
                                 >
                                     <article
-                                        class="overflow-hidden rounded-3xl border border-border/60 bg-background/70 shadow-sm backdrop-blur-sm transition-transform duration-300 hover:-translate-y-1"
+                                        class="overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+                                        style="
+                                            border-radius: var(--radius-xl);
+                                            border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+                                            background: color-mix(in oklab, var(--background) 70%, transparent);
+                                            box-shadow: var(--shadow-sm);
+                                            backdrop-filter: blur(calc(var(--spacing) * 1));
+                                        "
                                     >
                                         <div
-                                            class="aspect-16/10 overflow-hidden bg-muted"
+                                            class="aspect-16/10 overflow-hidden"
+                                            style="
+                                                background: var(--muted);
+                                            "
                                         >
                                             <img
                                                 src={project.thumbnail}
@@ -301,7 +372,13 @@
                                             />
                                         </div>
 
-                                        <div class="flex flex-col gap-3 p-6">
+                                        <div
+                                            class="flex flex-col"
+                                            style="
+                                                gap: calc(var(--spacing) * 3);
+                                                padding: calc(var(--spacing) * 6);
+                                            "
+                                        >
                                             <h3
                                                 class="text-xl font-semibold text-foreground"
                                             >
@@ -319,7 +396,11 @@
                         </Carousel.Content>
 
                         <div
-                            class="mt-8 flex items-center justify-center gap-4"
+                            class="flex items-center justify-center"
+                            style="
+                                margin-top: calc(var(--spacing) * 8);
+                                gap: calc(var(--spacing) * 4);
+                            "
                         >
                             <Carousel.Previous
                                 class="static translate-y-0"
