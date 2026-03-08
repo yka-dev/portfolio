@@ -25,6 +25,7 @@
     import TextLoop from "$lib/motion-core/text-loop/TextLoop.svelte";
     import Highlighter from "$lib/components/ori/text-highlighter/text-highlighter.svelte";
     import Button from "$lib/components/ui/button/button.svelte";
+    import {base} from "$app/paths"
 
     const COLOR_PRESETS = {
         dark: {
@@ -39,9 +40,9 @@
     const projects = [
         {
             title: "Portfolio Website",
-            thumbnail1: "/logo.svg",
-            thumbnail2: "/logo.svg",
-            images: ["/logo.svg"],
+            thumbnail1: "{base}/logo.svg",
+            thumbnail2: "{base}/logo.svg",
+            images: ["{base}/logo.svg"],
             shortDescription: "My personnal website",
             description:
                 "A personal site that showcases my work, experiments, and background through an interface focused on motion, typography, and clarity.",
@@ -72,9 +73,9 @@
         },
         {
             title: "Measurely",
-            thumbnail1: "/logo.svg",
-            thumbnail2: "/image3.png",
-            images: ["/image3.png"],
+            thumbnail1: "{base}/logo.svg",
+            thumbnail2: "{base}/image3.png",
+            images: ["{base}/image3.png"],
             shortDescription: "Analytics website",
             description:
                 "A concept project centered on clean interfaces and practical user flows for viewing and managing measurements in a clear and intuitive way.",
@@ -100,9 +101,9 @@
         },
         {
             title: "CPP_",
-            thumbnail1: "/logo.svg",
-            thumbnail2: "/logo.svg",
-            images: ["/logo.svg"],
+            thumbnail1: "{base}/logo.svg",
+            thumbnail2: "{base}/logo.svg",
+            images: ["{base}/logo.svg"],
             shortDescription: "Vscode extension",
             description:
                 "A project focused on sharpening my understanding of lower-level programming concepts and problem solving through C++ practice and experimentation.",
@@ -128,7 +129,7 @@
         },
         {
             title: "Have something in mind ?",
-            thumbnail1: "/logo.svg",
+            thumbnail1: "{base}/logo.svg",
             shortDescription:
                 "Contact me for any project or idea that you have in mind.",
         },
