@@ -31,6 +31,8 @@
 		"vite": "^7.3.1"
 	},
 	"dependencies": {
+		"@sveltejs/adapter-node": "^5.5.4",
+		"@sveltejs/adapter-static": "^3.0.10",
 		"@threlte/core": "^8.3.1",
 		"@threlte/extras": "^9.7.1",
 		"@types/gsap": "^3.0.0",

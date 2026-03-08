@@ -8,6 +8,7 @@
     import SplitReveal from "$lib/motion-core/split-reveal/SplitReveal.svelte";
     import TextLoop from "$lib/motion-core/text-loop/TextLoop.svelte";
     import Highlighter from "$lib/components/ori/text-highlighter/text-highlighter.svelte";
+    import Button from "$lib/components/ui/button/button.svelte";
 
     const COLOR_PRESETS = {
         dark: {
@@ -16,7 +17,7 @@
         },
         light: {
             color: "#CBCBCB",
-            highlightColor: "#000000",
+            highlightColor: "#636363",
         },
     };
     const projects = [
@@ -47,6 +48,9 @@
 
     let scrollProgress = $state(0);
     let workCarouselSection: HTMLDivElement | undefined;
+    let loading = $state(true);
+    let reveal = $state(false);
+    let selectedProjectIndex = $state(0);
 
     const clamp = (value: number, min = 0, max = 1) =>
         Math.min(max, Math.max(min, value));
@@ -69,6 +73,7 @@
     };
 
     onMount(() => {
+        document.body.style.overflow = "hidden";
         gsap.registerPlugin(ScrollTrigger);
 
         updateScrollProgress();
@@ -108,6 +113,14 @@
             trigger = animation.scrollTrigger;
         }
 
+        setTimeout(() => {
+            reveal = true;
+        }, 1000);
+        setTimeout(() => {
+            loading = false;
+            document.body.style.overflow = "";
+        }, 2000);
+
         return () => {
             trigger?.kill();
             animation?.kill();
@@ -143,20 +156,25 @@
 <PlasmaGrid
     color={COLOR_PRESETS.light.color}
     highlightColor={COLOR_PRESETS.light.highlightColor}
-    class={`fixed inset-0 z-10 h-screen w-screen opacity-40`}
+    class={`fixed inset-0 z-10 h-screen w-screen opacity-50`}
 />
+
+{#if loading}
+    <div
+        class={`loader flex bg-foreground justify-center items-center w-screen h-screen absolute left-0 top-0 z-40 ${reveal ? "reveal" : ""}`}
+    >
+        <span class="font-serif text-accent text-5xl">yka.</span>
+    </div>
+{/if}
+
 <div class="relative bg-background">
     <header
-        class="fixed top-0 left-0 right-0 z-30 flex items-center justify-center"
+        class="fixed top-0 left-0 right-0 z-30 flex items-center justify-center gap-2 pt-5"
     >
-        <img
-            src="/logo.svg"
-            alt="yka."
-            style="
-                height: calc(var(--spacing) * 30);
-                width: auto;
-            "
-        />
+        <span
+            class="font-serif text-accent text-center text-2xl bg-foreground px-5 py-1"
+            >yka.</span
+        >
 
         <div class="flex items-center gap-2">
             <a
@@ -208,29 +226,18 @@
                     pointer-events: ${scrollProgress >= 1 ? "none" : "auto"};
                 `}
             >
-                <div
-                    class="flex min-h-screen w-full max-w-7xl flex-col"
-                    style="
-                        padding-inline: calc(var(--spacing) * 8);
-                        padding-top: calc(var(--spacing) * 32);
-                    "
-                >
+                <div class="flex min-h-screen w-full max-w-7xl flex-col">
                     <section
                         class="relative flex flex-1 items-center justify-center overflow-hidden"
                     >
-                        <div
-                            class="select-none text-center"
-                            style="
-                                margin-top: calc(var(--spacing) * -60);
-                                padding-inline: calc(var(--spacing) * 6);
-                            "
-                        >
+                        <div class="select-none text-center]">
                             <SplitReveal
                                 mode="chars"
+                                delay={1.1}
                                 config={{
                                     chars: { stagger: 0.03 },
                                 }}
-                                class="text-center leading-[0.85] text-foreground font-serif  text-9xl"
+                                class="text-center leading-[0.85] text-foreground font-serif  text-7xl"
                             >
                                 Yassine<br />
                                 <span
@@ -240,19 +247,17 @@
                             </SplitReveal>
                         </div>
 
-                        <blockquote
+                        <SplitReveal
+                            mode="words"
                             class="absolute text-muted-foreground"
+                            delay={1.4}
                             style="
-                                bottom: calc(var(--spacing) * 10);
-                                left: calc(var(--spacing) * 10);
-                            "
+                                    bottom: calc(var(--spacing) * 10);
+                                    left: calc(var(--spacing) * 10);
+                                "
                         >
                             <h2
-                                class="text-left text-xs text-serif italic text-muted-foreground"
-                                style="
-                                    font-family: var(--font-serif);
-                                    font-size: 3.5rem;
-                                "
+                                class="text-left font-serif italic text-muted-foreground text-3xl"
                             >
                                 A collection of <TextLoop
                                     class="text-secondary-foreground"
@@ -264,7 +269,7 @@
                                     >Yassine</Highlighter
                                 >
                             </h2>
-                        </blockquote>
+                        </SplitReveal>
                     </section>
                 </div>
             </div>
@@ -298,7 +303,7 @@
                 delay={0.2}
                 lines.duration={0.02}
                 mode="lines"
-                class="text-left text-muted-foreground text-lg w-200 font-sans"
+                class="text-left text-muted-foreground text-lg max-w-200 font-sans"
             >
                 Hi, I'm Yassine Akhouayri. I'm 18 years old and currently living
                 in Montreal, Canada. I’ve always been curious about how
@@ -368,50 +373,58 @@
                         class="w-full max-w-6xl"
                     >
                         <Carousel.Content class="-ms-4">
-                            {#each projects as project}
+                            {#each projects as project, i (i)}
                                 <Carousel.Item
                                     class="ps-4 md:basis-1/2 xl:basis-1/3"
                                 >
                                     <article
-                                        class="overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+                                        class="project-card overflow-hidden flex flex-col justify-between"
                                         style="
-                                            border-radius: var(--radius-xl);
-                                            border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
-                                            background: color-mix(in oklab, var(--background) 70%, transparent);
-                                            box-shadow: var(--shadow-sm);
-                                            backdrop-filter: blur(calc(var(--spacing) * 1));
-                                        "
+		border-radius: var(--radius-xl);
+		border: {i === selectedProjectIndex
+                                            ? '2px solid color-mix(in oklab, var(--foreground) 20%, transparent)'
+                                            : '1px solid color-mix(in oklab, var(--border) 60%, transparent)'};
+		background: color-mix(in oklab, var(--background) 70%, transparent);
+		box-shadow: var(--shadow-sm);
+		backdrop-filter: blur(calc(var(--spacing) * 1));
+	"
                                     >
-                                        <div
-                                            class="aspect-16/10 overflow-hidden"
-                                            style="
-                                                background: var(--muted);
-                                            "
-                                        >
+                                        <div class="overflow-hidden bg-muted">
                                             <img
                                                 src={project.thumbnail}
                                                 alt={project.title}
-                                                class="h-full w-full object-cover"
+                                                class="h-full w-full object-contain"
                                             />
                                         </div>
 
                                         <div
-                                            class="flex flex-col"
-                                            style="
-                                                gap: calc(var(--spacing) * 3);
-                                                padding: calc(var(--spacing) * 6);
-                                            "
+                                            class="content p-6 flex flex-col items-start gap-3"
                                         >
-                                            <h3
-                                                class="text-2xl font-serif text-foreground"
+                                            <div class="text">
+                                                <h3
+                                                    class="text-2xl font-serif text-foreground"
+                                                >
+                                                    {project.title}
+                                                </h3>
+
+                                                <p
+                                                    class="text-sm font-inter leading-6 text-muted-foreground"
+                                                >
+                                                    {project.description}
+                                                </p>
+                                            </div>
+
+                                            <Button
+                                                class="learn-more text-sm font-medium cursor-pointer hover:bg-accent-background"
+                                                style="
+                                                backdrop-filter: blur(calc(var(--spacing) * 1));
+                                                "
+                                                variant="outline"
+                                                onclick={() =>
+                                                    (selectedProjectIndex = i)}
                                             >
-                                                {project.title}
-                                            </h3>
-                                            <p
-                                                class="text-sm font-inter leading-6 text-muted-foreground"
-                                            >
-                                                {project.description}
-                                            </p>
+                                                Learn more
+                                            </Button>
                                         </div>
                                     </article>
                                 </Carousel.Item>
@@ -423,11 +436,27 @@
                             data-carousel-controls
                         >
                             <Carousel.Previous
+                                style="
+                                    width: calc(var(--spacing) * 10);
+                                    height: calc(var(--spacing) * 10);
+                                    border-radius: var(--radius);
+                                    border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+                                    background: color-mix(in oklab, var(--background) 70%, transparent);
+                                    backdrop-filter: blur(calc(var(--spacing) * 1));
+                                "
                                 class="static translate-y-0"
                                 size="icon-lg"
                                 variant="outline"
                             />
                             <Carousel.Next
+                                style="
+                                    width: calc(var(--spacing) * 10);
+                                    height: calc(var(--spacing) * 10);
+                                    border-radius: var(--radius);
+                                    border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+                                    background: color-mix(in oklab, var(--background) 70%, transparent);
+                                    backdrop-filter: blur(calc(var(--spacing) * 1));
+                                "
                                 class="static translate-y-0"
                                 size="icon-lg"
                                 variant="outline"
@@ -435,6 +464,8 @@
                         </div>
                     </Carousel.Root>
                 </div>
+
+                <div>The project learn more</div>
             </div>
         </section>
 

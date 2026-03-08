@@ -1,6 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:ital,opsz@0,14..32;1,14..32&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:ital,opsz@0,14..32;1,14..32&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
+
+body {
+    overflow-x: hidden;
+}
+
+.project-card {
+    height: 25rem;
+    transition: border 0.25s ease;
+}
+
+.project-card .content {
+    height: 8rem;
+    transition: height 0.25s ease;
+}
+
+.learn-more {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.project-card:hover .learn-more {
+    opacity: 1;
+}
+
+.project-card:hover .content {
+    height: 11rem;
+}
+
+.loader {
+    transition: opacity 0.3s ease;
+}
+.loader.reveal {
+    opacity: 0;
+}
 
 @custom-variant dark (&:is(.dark *));
 
