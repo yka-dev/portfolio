@@ -17,6 +17,7 @@ const config = {
     }),
     paths: {
       base: process.env.BASE_PATH || "",
+      relative: false
     },
     alias: {
       "@/*": "./path/to/lib/*",
