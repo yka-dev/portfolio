@@ -1,6 +1,20 @@
 <script lang="ts">
     import PlasmaGrid from "$lib/motion-core/plasma-grid/PlasmaGrid.svelte";
-    import { Github, Linkedin } from "@lucide/svelte";
+    import {
+        Github,
+        Linkedin,
+        Globe,
+        Braces,
+        FileCode2,
+        Wind,
+        Zap,
+        Cpu,
+        Boxes,
+        ChartNoAxesCombined,
+        PencilRuler,
+        Users,
+        SplitSquareVerticalIcon,
+    } from "@lucide/svelte";
     import gsap from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
     import { onMount } from "svelte";
@@ -23,26 +37,97 @@
     const projects = [
         {
             title: "Portfolio Website",
-            description: "A personal site to showcase my work and background.",
-            thumbnail: "/logo.svg",
+            thumbnail1: "/logo.svg",
+            thumbnail2: "/logo.svg",
+            images: [],
+            shortDescription: "My personnal website",
+            description:
+                "A personal site that showcases my work, experiments, and background through an interface focused on motion, typography, and clarity.",
+            features: [
+                "Responsive landing page with immersive animated sections",
+                "Project carousel with a detailed project presentation area",
+                "Smooth scroll-driven transitions and reveal animations",
+            ],
+            why: "I built this portfolio to create a place where I could present my projects in a way that feels personal and visually engaging while also experimenting with interface design, motion, and front-end architecture.",
+            techStack: [
+                { name: "SvelteKit", icon: Braces },
+                { name: "TypeScript", icon: FileCode2 },
+                { name: "Tailwind CSS", icon: Wind },
+                { name: "GSAP", icon: Zap },
+            ],
+            links: [
+                {
+                    label: "GitHub",
+                    href: "https://github.com/yka-dev",
+                    icon: Github,
+                },
+                {
+                    label: "Live Demo",
+                    href: "/",
+                },
+            ],
         },
         {
             title: "Measurely",
+            thumbnail1: "/logo.svg",
+            thumbnail2: "/logo.svg",
+            images: [],
+            shortDescription: "Analytics website",
             description:
-                "Interactive interfaces and motion-driven web concepts.",
-            thumbnail: "/logo.svg",
+                "A concept project centered on clean interfaces and practical user flows for viewing and managing measurements in a clear and intuitive way.",
+            features: [
+                "Structured dashboard-style layout for organizing information",
+                "Simple and readable interface focused on usability",
+                "Component-based architecture for scalable UI development",
+            ],
+            why: "I built Measurely to explore how thoughtful interface structure and interaction design can make technical or data-heavy information feel much easier to navigate.",
+            techStack: [
+                { name: "SvelteKit", icon: Braces },
+                { name: "TypeScript", icon: FileCode2 },
+                { name: "Tailwind CSS", icon: Wind },
+                { name: "Analytics", icon: ChartNoAxesCombined },
+            ],
+            links: [
+                {
+                    label: "GitHub",
+                    href: "https://github.com/yka-dev",
+                    icon: Github,
+                },
+            ],
         },
         {
             title: "CPP_",
+            thumbnail1: "/logo.svg",
+            thumbnail2: "/logo.svg",
+            images: [],
+            shortDescription: "Vscode extension",
             description:
-                "Interactive interfaces and motion-driven web concepts.",
-            thumbnail: "/logo.svg",
+                "A project focused on sharpening my understanding of lower-level programming concepts and problem solving through C++ practice and experimentation.",
+            features: [
+                "Hands-on exploration of core C++ language concepts",
+                "Practice-oriented implementation of algorithms and logic",
+                "Focus on writing efficient and structured code",
+            ],
+            why: "I built this project as a way to strengthen my foundations in programming by working closer to the language itself, improving both my problem-solving approach and my understanding of performance-oriented code.",
+            techStack: [
+                { name: "C++", icon: Cpu },
+                { name: "STL", icon: Boxes },
+                { name: "Algorithms", icon: Zap },
+                { name: "Data Structures", icon: Braces },
+            ],
+            links: [
+                {
+                    label: "GitHub",
+                    href: "https://github.com/yka-dev",
+                    icon: Github,
+                },
+            ],
         },
         {
             title: "Have something in mind ?",
-            description:
-                "Contact me for any project or idea that you have in mind.",
             thumbnail: "/logo.svg",
+            shortDescription:
+                "Contact me for any project or idea that you have in mind.",
         },
     ];
 
@@ -51,6 +136,24 @@
     let loading = $state(true);
     let reveal = $state(false);
     let selectedProjectIndex = $state(0);
+    let displayedProjectIndex = $state(0);
+    let isProjectDetailsVisible = $state(true);
+    let projectSwapTimeout: ReturnType<typeof setTimeout> | undefined;
+
+    const selectedProject = $derived(projects[selectedProjectIndex]);
+    const displayedProject = $derived(projects[displayedProjectIndex]);
+
+    const showProjectDetails = (index: number) => {
+        if (index === displayedProjectIndex) return;
+
+        isProjectDetailsVisible = false;
+        if (projectSwapTimeout) clearTimeout(projectSwapTimeout);
+
+        projectSwapTimeout = setTimeout(() => {
+            displayedProjectIndex = index;
+            isProjectDetailsVisible = true;
+        }, 220);
+    };
 
     const clamp = (value: number, min = 0, max = 1) =>
         Math.min(max, Math.max(min, value));
@@ -124,6 +227,7 @@
         return () => {
             trigger?.kill();
             animation?.kill();
+            if (projectSwapTimeout) clearTimeout(projectSwapTimeout);
             window.removeEventListener("scroll", updateScrollProgress);
             window.removeEventListener("resize", updateScrollProgress);
         };
@@ -153,11 +257,11 @@
     />
 </svelte:head>
 
-<PlasmaGrid
+<!-- <PlasmaGrid
     color={COLOR_PRESETS.light.color}
     highlightColor={COLOR_PRESETS.light.highlightColor}
     class={`fixed inset-0 z-10 h-screen w-screen opacity-50`}
-/>
+/> -->
 
 {#if loading}
     <div
@@ -277,7 +381,7 @@
     </div>
 
     <div
-        class="relative z-20"
+        class="relative z-20 flex flex-col items-center"
         style={`
             opacity: ${contentOpacity};
             transform: translateY(${contentTranslateY}px) scale(${contentScale});
@@ -338,7 +442,9 @@
         </section>
 
         <section class="min-h-screen mt-100">
-            <div class="mx-auto flex w-full max-w-7xl flex-col gap-4">
+            <div
+                class="mx-auto flex w-full max-w-7xl flex-col gap-4 items-center"
+            >
                 <div class="flex flex-col items-center gap-5">
                     <SplitReveal
                         triggerOnScroll={true}
@@ -391,7 +497,7 @@
                                     >
                                         <div class="overflow-hidden bg-muted">
                                             <img
-                                                src={project.thumbnail}
+                                                src={project.thumbnail1}
                                                 alt={project.title}
                                                 class="h-full w-full object-contain"
                                             />
@@ -410,21 +516,40 @@
                                                 <p
                                                     class="text-sm font-inter leading-6 text-muted-foreground"
                                                 >
-                                                    {project.description}
+                                                    {project.shortDescription}
                                                 </p>
                                             </div>
 
-                                            <Button
-                                                class="learn-more text-sm font-medium cursor-pointer hover:bg-accent-background"
-                                                style="
+                                            {#if i == projects.length - 1}
+                                                <Button
+                                                    class="learn-more text-sm font-medium cursor-pointer hover:bg-accent-background"
+                                                    style="
                                                 backdrop-filter: blur(calc(var(--spacing) * 1));
                                                 "
-                                                variant="outline"
-                                                onclick={() =>
-                                                    (selectedProjectIndex = i)}
-                                            >
-                                                Learn more
-                                            </Button>
+                                                    variant="outline"
+                                                    onclick={() => {
+                                                        window.location.href =
+                                                            "mailto:yassine_akh@proton.me";
+                                                    }}
+                                                >
+                                                    Contact me
+                                                </Button>
+                                            {:else}
+                                                <Button
+                                                    class="learn-more text-sm font-medium cursor-pointer hover:bg-accent-background"
+                                                    style="
+                                                backdrop-filter: blur(calc(var(--spacing) * 1));
+                                                "
+                                                    variant="outline"
+                                                    onclick={() => {
+                                                        selectedProjectIndex =
+                                                            i;
+                                                        showProjectDetails(i);
+                                                    }}
+                                                >
+                                                    Learn more
+                                                </Button>
+                                            {/if}
                                         </div>
                                     </article>
                                 </Carousel.Item>
@@ -465,11 +590,131 @@
                     </Carousel.Root>
                 </div>
 
-                <div>The project learn more</div>
+                <div class="mt-12 p-2 md:p-0 w-287">
+                    <!-- The project detailed information -->
+                    <div
+                        class="transition-opacity duration-200"
+                        class:opacity-0={!isProjectDetailsVisible}
+                        class:opacity-100={isProjectDetailsVisible}
+                    >
+                        {#key displayedProjectIndex}
+                            <div class="flex flex-col gap-8">
+                                <div
+                                    class="flex flex-wrap items-center gap-3 pb-2"
+                                >
+                                    <SplitReveal triggerOnScroll={true}>
+                                        <h3
+                                            class="font-serif text-4xl text-foreground"
+                                        >
+                                            {displayedProject.title}
+                                        </h3>
+                                    </SplitReveal>
+
+                                    <div class="flex items-center gap-2">
+                                        {#each displayedProject.links as link}
+                                            <SplitReveal triggerOnScroll={true}>
+                                                <a
+                                                    href={link.href}
+                                                    aria-label={link.label}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    class="flex h-8 w-8 items-center justify-center text-foreground/70 transition-colors hover:text-foreground"
+                                                >
+                                                    {#if link.icon}
+                                                        <link.icon size={16} />
+                                                    {:else}
+                                                        <span
+                                                            class="text-xs font-medium uppercase tracking-[0.2em]"
+                                                        >
+                                                            {link.label.slice(
+                                                                0,
+                                                                4,
+                                                            )}
+                                                        </span>
+                                                    {/if}
+                                                </a>
+                                            </SplitReveal>
+                                        {/each}
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-start"
+                                >
+                                    <div class="flex flex-col gap-6">
+                                        <div
+                                            class="aspect-16/10 max-w-md overflow-hidden rounded-xl border border-border/60"
+                                        >
+                                            <img
+                                                src={displayedProject.thumbnail2}
+                                                alt={displayedProject.title}
+                                                class="h-full w-full object-cover hover:scale-105 cursor-pointer transition"
+                                            />
+                                        </div>
+
+                                        <div class="flex flex-col gap-3">
+                                            {#each displayedProject.techStack as tech}
+                                                <SplitReveal
+                                                    triggerOnScroll={true}
+                                                >
+                                                    <div
+                                                        class="flex items-center gap-3 text-muted-foreground"
+                                                    >
+                                                        <tech.icon size={16} />
+                                                        <span class="text-sm">
+                                                            {tech.name}
+                                                        </span>
+                                                    </div>
+                                                </SplitReveal>
+                                            {/each}
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col gap-6">
+                                        <SplitReveal triggerOnScroll={true}>
+                                            <p
+                                                class="text-base leading-7 text-muted-foreground font-sans"
+                                            >
+                                                {displayedProject.description}
+                                            </p>
+                                        </SplitReveal>
+
+                                        <div class="flex flex-col gap-3">
+                                            <SplitReveal triggerOnScroll={true}>
+                                                <h4
+                                                    class="text-sm font-bold font-sans tracking-[0.2em] text-muted-foreground"
+                                                >
+                                                    Features
+                                                </h4>
+                                            </SplitReveal>
+                                            <SplitReveal triggerOnScroll={true}>
+                                                <ul
+                                                    class="list-disc space-y-2 pl-5 text-base leading-7 text-muted-foreground font-sans"
+                                                >
+                                                    {#each displayedProject.features as feature}
+                                                        <li>{feature}</li>
+                                                    {/each}
+                                                </ul>
+                                            </SplitReveal>
+                                        </div>
+
+                                        <SplitReveal triggerOnScroll={true}>
+                                            <p
+                                                class="text-base leading-7 text-muted-foreground"
+                                            >
+                                                {displayedProject.why}
+                                            </p>
+                                        </SplitReveal>
+                                    </div>
+                                </div>
+                            </div>
+                        {/key}
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="min-h-screen">
+        <section class="min-h-screen mt-100">
             <div class="mx-auto flex w-full max-w-7xl flex-col gap-4">
                 <div class="flex flex-col items-center gap-4">
                     <SplitReveal
