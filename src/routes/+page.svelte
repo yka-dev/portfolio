@@ -282,7 +282,7 @@
 <PlasmaGrid
     color={COLOR_PRESETS.light.color}
     highlightColor={COLOR_PRESETS.light.highlightColor}
-    class={`fixed inset-0 z-10 h-screen w-screen opacity-10`}
+    class={`fixed inset-0 z-10 h-screen w-screen opacity-15`}
 />
 
 {#if loading}
