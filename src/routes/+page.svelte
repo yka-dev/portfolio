@@ -5,16 +5,14 @@
         Linkedin,
         Globe,
         Braces,
-        FileCode2,
         Wind,
         Zap,
         Cpu,
         Boxes,
         ChartNoAxesCombined,
-        PencilRuler,
-        Users,
-        SplitSquareVerticalIcon,
         X,
+        FileCode2,
+        Code
     } from "@lucide/svelte";
     import gsap from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -133,6 +131,33 @@
             shortDescription:
                 "Contact me for any project or idea that you have in mind.",
         },
+    ];
+
+    const tools = [
+        {
+            category: 'Programming languages',
+            items: [
+                { icon: Code, name: 'JavaScript', desc: 'Dynamic scripting for interactive web applications' },
+                { icon: FileCode2, name: 'TypeScript', desc: 'Typed superset enhancing JavaScript development' },
+                { icon: Code, name: 'Python', desc: 'Versatile language for automation and data' }
+            ]
+        },
+        {
+            category: 'Frameworks',
+            items: [
+                { icon: Wind, name: 'Svelte', desc: 'Reactive framework for efficient UI building' },
+                { icon: Zap, name: 'React', desc: 'Library for declarative user interface components' },
+                { icon: Globe, name: 'Next.js', desc: 'React framework for server-side rendered apps' }
+            ]
+        },
+        {
+            category: 'Coding environment',
+            items: [
+                { icon: Code, name: 'VS Code', desc: 'Extensible editor with powerful development tools' },
+                { icon: Github, name: 'Git', desc: 'Distributed version control for code management' },
+                { icon: Cpu, name: 'Terminal', desc: 'Command-line interface for system operations' }
+            ]
+        }
     ];
 
     let scrollProgress = $state(0);
@@ -464,7 +489,7 @@
             </SplitReveal>
         </section>
 
-        <section class="min-h-screen mt-100">
+ <section class="min-h-screen mt-100">
             <div
                 class="mx-auto flex w-full max-w-7xl flex-col gap-4 items-center"
             >
@@ -771,6 +796,53 @@
                         triggerOnScroll={true}
                         delay={0.2}
                         mode="lines"
+                        class="text-muted-foreground max-w-100 text-base font-sans"
+                    >
+                        The tools I use to build and experiment with software,
+                        from programming languages and frameworks to the editor
+                        and utilities that shape my development workflow.
+                    </SplitReveal>
+                </div>
+
+                <div class="flex flex-col gap-8 max-w-4xl mx-auto mt-12">
+                    {#each tools as category}
+                        <div class="flex flex-col gap-4">
+                            <SplitReveal triggerOnScroll={true} mode="chars">
+                                <h3 class="font-serif text-2xl text-foreground">{category.category}</h3>
+                            </SplitReveal>
+                            <SplitReveal triggerOnScroll={true} mode="lines">
+                                <div class="flex flex-col gap-2">
+                                    {#each category.items as item}
+                                        <div class="flex items-center">
+                                            <div class="flex items-center gap-2 w-40">
+                                                <svelte:component this={item.icon} size={16} />
+                                                <span class="font-medium">{item.name}</span>
+                                            </div>
+                                            <span class="text-muted-foreground text-sm">{item.desc}</span>
+                                        </div>
+                                    {/each}
+                                </div>
+                            </SplitReveal>
+                        </div>
+                    {/each}
+                </div>
+            </div>
+        </section>
+
+        <section class="min-h-screen mt-100">
+            <div class="mx-auto flex w-full max-w-7xl flex-col gap-4">
+                <div class="flex flex-col items-center gap-4">
+                    <SplitReveal
+                        triggerOnScroll={true}
+                        mode="chars"
+                        class="font-light leading-none text-foreground font-serif text-4xl"
+                    >
+                        Have something in mind ?
+                    </SplitReveal>
+                    <SplitReveal
+                        triggerOnScroll={true}
+                        delay={0.2}
+                        mode="lines"
                         class="text-muted-foreground w-100 text-base font-sans"
                     >
                         The tools I use to build and experiment with software,
@@ -784,7 +856,7 @@
         </section>
 
         <section
-            class="flex p-2 border-t border-border w-full items-center justify-center text-muted-foreground font-mono text-sm"
+            class="flex p-2 border-t border-border w-full items-center justify-center text-muted-foreground font-mono text-xs"
         >
             All rights reserved © 2026 Yassine Akhouayri
         </section>
