@@ -23,7 +23,8 @@
     import TextLoop from "$lib/motion-core/text-loop/TextLoop.svelte";
     import Highlighter from "$lib/components/ori/text-highlighter/text-highlighter.svelte";
     import Button from "$lib/components/ui/button/button.svelte";
-    import { base } from "$app/paths";
+    import projects from "./projects.ts";
+    import tools from "./tools.ts";
 
     const COLOR_PRESETS = {
         dark: {
@@ -35,166 +36,6 @@
             highlightColor: "#636363",
         },
     };
-    const projects = [
-        {
-            title: "Portfolio Website",
-            thumbnail1: `${base}/logo.svg`,
-            thumbnail2: `${base}/logo.svg`,
-            images: [`${base}/logo.svg`],
-            shortDescription: "My personnal website",
-            description:
-                "A personal site that showcases my work, experiments, and background through an interface focused on motion, typography, and clarity.",
-            features: [
-                "Responsive landing page with immersive animated sections",
-                "Project carousel with a detailed project presentation area",
-                "Smooth scroll-driven transitions and reveal animations",
-            ],
-            why: "I built this portfolio to create a place where I could present my projects in a way that feels personal and visually engaging while also experimenting with interface design, motion, and front-end architecture.",
-            techStack: [
-                { name: "SvelteKit", icon: Braces },
-                { name: "TypeScript", icon: FileCode2 },
-                { name: "Tailwind CSS", icon: Wind },
-                { name: "GSAP", icon: Zap },
-            ],
-            links: [
-                {
-                    label: "GitHub",
-                    href: "https://github.com/yka-dev/yassine-ak",
-                    icon: Github,
-                },
-                {
-                    label: "Website",
-                    href: "https://yassine-ak.dev",
-                    icon: Globe,
-                },
-            ],
-        },
-        {
-            title: "Measurely",
-            thumbnail1: `${base}/logo.svg`,
-            thumbnail2: `${base}/image3.png`,
-            images: [`${base}/image3.png`],
-            shortDescription: "Analytics website",
-            description:
-                "A concept project centered on clean interfaces and practical user flows for viewing and managing measurements in a clear and intuitive way.",
-            features: [
-                "Structured dashboard-style layout for organizing information",
-                "Simple and readable interface focused on usability",
-                "Component-based architecture for scalable UI development",
-            ],
-            why: "I built Measurely to explore how thoughtful interface structure and interaction design can make technical or data-heavy information feel much easier to navigate.",
-            techStack: [
-                { name: "SvelteKit", icon: Braces },
-                { name: "TypeScript", icon: FileCode2 },
-                { name: "Tailwind CSS", icon: Wind },
-                { name: "Analytics", icon: ChartNoAxesCombined },
-            ],
-            links: [
-                {
-                    label: "GitHub",
-                    href: "https://github.com/Measurely-dev/Measurely",
-                    icon: Github,
-                },
-            ],
-        },
-        {
-            title: "CPP_",
-            thumbnail1: `${base}/logo.svg`,
-            thumbnail2: `${base}/logo.svg`,
-            images: [`${base}/logo.svg`],
-            shortDescription: "Vscode extension",
-            description:
-                "A project focused on sharpening my understanding of lower-level programming concepts and problem solving through C++ practice and experimentation.",
-            features: [
-                "Hands-on exploration of core C++ language concepts",
-                "Practice-oriented implementation of algorithms and logic",
-                "Focus on writing efficient and structured code",
-            ],
-            why: "I built this project as a way to strengthen my foundations in programming by working closer to the language itself, improving both my problem-solving approach and my understanding of performance-oriented code.",
-            techStack: [
-                { name: "C++", icon: Cpu },
-                { name: "STL", icon: Boxes },
-                { name: "Algorithms", icon: Zap },
-                { name: "Data Structures", icon: Braces },
-            ],
-            links: [
-                {
-                    label: "GitHub",
-                    href: "https://github.com/yka-dev/CPP_extension",
-                    icon: Github,
-                },
-            ],
-        },
-        {
-            title: "Have something in mind ?",
-            thumbnail1: `${base}/logo.svg`,
-            shortDescription:
-                "Contact me for any project or idea that you have in mind.",
-        },
-    ];
-
-    const tools = [
-        {
-            category: "Programming languages",
-            items: [
-                {
-                    icon: Code,
-                    name: "JavaScript",
-                    desc: "Dynamic scripting for interactive web applications",
-                },
-                {
-                    icon: FileCode2,
-                    name: "TypeScript",
-                    desc: "Typed superset enhancing JavaScript development",
-                },
-                {
-                    icon: Code,
-                    name: "Python",
-                    desc: "Versatile language for automation and data",
-                },
-            ],
-        },
-        {
-            category: "Frameworks",
-            items: [
-                {
-                    icon: Wind,
-                    name: "Svelte",
-                    desc: "Reactive framework for efficient UI building",
-                },
-                {
-                    icon: Zap,
-                    name: "React",
-                    desc: "Library for declarative user interface components",
-                },
-                {
-                    icon: Globe,
-                    name: "Next.js",
-                    desc: "React framework for server-side rendered apps",
-                },
-            ],
-        },
-        {
-            category: "Coding environment",
-            items: [
-                {
-                    icon: Code,
-                    name: "VS Code",
-                    desc: "Extensible editor with powerful development tools",
-                },
-                {
-                    icon: Github,
-                    name: "Git",
-                    desc: "Distributed version control for code management",
-                },
-                {
-                    icon: Cpu,
-                    name: "Terminal",
-                    desc: "Command-line interface for system operations",
-                },
-            ],
-        },
-    ];
 
     let imgWrapperRef: HTMLButtonElement | undefined;
     let imageButtonAnimation: gsap.core.Tween | undefined;
@@ -215,10 +56,10 @@
         | undefined;
 
     const displayedProject = $derived(projects[displayedProjectIndex]);
-    const galleryImages = $derived(displayedProject.images ?? []);
+    const galleryItems = $derived(displayedProject.galleryItems ?? []);
 
     const openGallery = () => {
-        if (!galleryImages.length) return;
+        if (!galleryItems.length) return;
         gallerySelectedIndex = 0;
         isGalleryOpen = true;
         document.body.style.overflow = "hidden";
@@ -628,7 +469,7 @@
                         <Carousel.Content>
                             {#each projects as project, i (i)}
                                 <Carousel.Item
-                                    class="shrink-0 grow-0  max-w-100"
+                                    class="max-w-100"
                                     onclick={() => {
                                         if (i !== projects.length - 1) {
                                             selectedProjectIndex = i;
@@ -648,22 +489,39 @@
 		backdrop-filter: blur(calc(var(--spacing) * 1));
 	"
                                     >
-                                        <div class="overflow-hidden bg-muted">
-                                            <img
-                                                src={project.thumbnail1}
-                                                alt={project.title}
-                                                class="h-full w-full object-contain"
-                                            />
+                                        <div
+                                            class="absolute h-80 w-full overflow-hidden flex items-center justify-center"
+                                        >
+                                            {#if project.thumbnail1.type === "image"}
+                                                <img
+                                                    src={project.thumbnail1.src}
+                                                    alt={project.title}
+                                                    class="h-full w-full object-contain"
+                                                />
+                                            {:else}
+                                                <project.thumbnail1.component />
+                                            {/if}
                                         </div>
 
+                                        <div class="h-full"></div>
                                         <div
-                                            class="content p-6 flex flex-col items-start gap-3"
+                                            class="content z-10 p-6 flex flex-col items-start gap-3 bg-linear-to-t from-background/90 to-transparent"
                                         >
                                             <div class="text">
                                                 <h3
-                                                    class="text-2xl font-serif text-foreground"
+                                                    class="text-2xl flex items-center font-serif text-foreground gap-2"
                                                 >
                                                     {project.title}
+                                                    {#if project.start !== undefined && project.end !== undefined}
+                                                        <span
+                                                            class="text-sm text-muted-foreground"
+                                                        >
+                                                            {project.start ===
+                                                            project.end
+                                                                ? `(${project.start})`
+                                                                : `(${project.start} - ${project.end})`}</span
+                                                        >
+                                                    {/if}
                                                 </h3>
 
                                                 <p
@@ -681,17 +539,6 @@
                                                 backdrop-filter: blur(calc(var(--spacing) * 1));
                                                 ">Contact me</a
                                                 >
-                                                <!-- <Button
-                                                    class="learn-more text-sm font-medium cursor-pointer hover:bg-accent-background"
-
-                                                    variant="outline"
-                                                    onclick={() => {
-                                                        window.location.href =
-                                                            "mailto:yassine_akh@proton.me";
-                                                    }}
-                                                >
-                                                    Contact me
-                                                </Button> -->
                                             {:else}
                                                 <Button
                                                     class="learn-more text-sm font-medium cursor-pointer hover:bg-accent-background"
@@ -749,7 +596,6 @@
                 </div>
 
                 <div class="mt-12 px-10 max-w-287">
-                    <!-- The project detailed information -->
                     <div
                         class="transition-opacity duration-200"
                         class:opacity-0={!isProjectDetailsVisible}
@@ -770,33 +616,47 @@
                                             {displayedProject.title}
                                         </h3>
                                     </SplitReveal>
-
-                                    <div class="flex items-center gap-2">
-                                        {#each displayedProject.links as link}
-                                            <SplitReveal triggerOnScroll={true}>
-                                                <a
-                                                    href={link.href}
-                                                    aria-label={link.label}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    class="flex h-8 w-8 items-center justify-center text-foreground/70 transition-colors hover:text-foreground"
+                                    <SplitReveal
+                                        triggerOnScroll={true}
+                                        class="text-xl font-serif text-muted-foreground"
+                                    >
+                                        {displayedProject.start ===
+                                        displayedProject.end
+                                            ? `(${displayedProject.start})`
+                                            : `(${displayedProject.start} - ${displayedProject.end})`}
+                                    </SplitReveal>
+                                    <span>
+                                        <div class="flex items-center gap-2">
+                                            {#each displayedProject.links as link}
+                                                <SplitReveal
+                                                    triggerOnScroll={true}
                                                 >
-                                                    {#if link.icon}
-                                                        <link.icon size={16} />
-                                                    {:else}
-                                                        <span
-                                                            class="text-xs font-medium uppercase tracking-[0.2em]"
-                                                        >
-                                                            {link.label.slice(
-                                                                0,
-                                                                4,
-                                                            )}
-                                                        </span>
-                                                    {/if}
-                                                </a>
-                                            </SplitReveal>
-                                        {/each}
-                                    </div>
+                                                    <a
+                                                        href={link.href}
+                                                        aria-label={link.label}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        class="flex h-8 w-8 items-center justify-center text-foreground/70 transition-colors hover:text-foreground"
+                                                    >
+                                                        {#if link.icon}
+                                                            <link.icon
+                                                                size={16}
+                                                            />
+                                                        {:else}
+                                                            <span
+                                                                class="text-xs font-medium uppercase tracking-[0.2em]"
+                                                            >
+                                                                {link.label.slice(
+                                                                    0,
+                                                                    4,
+                                                                )}
+                                                            </span>
+                                                        {/if}
+                                                    </a>
+                                                </SplitReveal>
+                                            {/each}
+                                        </div>
+                                    </span>
                                 </div>
 
                                 <!-- FLEX LAYOUT -->
@@ -1070,7 +930,7 @@
                 <Carousel.Root
                     opts={{
                         align: "center",
-                        loop: galleryImages.length > 1,
+                        loop: galleryItems.length > 1,
                     }}
                     setApi={(api) => {
                         galleryApi = api;
@@ -1082,22 +942,33 @@
                     class="w-full"
                 >
                     <Carousel.Content class="-ms-4">
-                        {#each galleryImages as image, imageIndex (imageIndex)}
+                        {#each galleryItems as item, imageIndex (imageIndex)}
                             <Carousel.Item class="ps-4 basis-full">
                                 <div
                                     class="flex aspect-16/10 items-center justify-center overflow-hidden rounded-2xl border border-border/60 bg-black/20"
                                 >
-                                    <img
-                                        src={image}
-                                        alt={`${displayedProject.title} image ${imageIndex + 1}`}
-                                        class="h-full w-full object-fill"
-                                    />
+                                    {#if item.type === "video"}
+                                        <video
+                                            src={item.src}
+                                            controls
+                                            playsinline
+                                            class="h-full w-full object-fill"
+                                        >
+                                            <track kind="captions" />
+                                        </video>
+                                    {:else}
+                                        <img
+                                            src={item.src}
+                                            alt={`${displayedProject.title} media ${imageIndex + 1}`}
+                                            class="h-full w-full object-fill"
+                                        />
+                                    {/if}
                                 </div>
                             </Carousel.Item>
                         {/each}
                     </Carousel.Content>
 
-                    {#if galleryImages.length > 1}
+                    {#if galleryItems.length > 1}
                         <Carousel.Previous
                             class="left-4 cursor-pointer"
                             size="icon-lg"
@@ -1130,7 +1001,7 @@
                 <div
                     class="mt-4 text-center font-mono text-sm text-muted-foreground"
                 >
-                    {gallerySelectedIndex + 1}/{galleryImages.length}
+                    {gallerySelectedIndex + 1}/{galleryItems.length}
                 </div>
             </div>
         </div>
