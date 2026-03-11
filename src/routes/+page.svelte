@@ -196,6 +196,10 @@
         },
     ];
 
+    let imgWrapperRef: HTMLButtonElement | undefined;
+    let imageButtonAnimation: gsap.core.Tween | undefined;
+    let imageButtonTrigger: ScrollTrigger | undefined;
+
     let scrollProgress = $state(0);
     let workCarouselSection: HTMLDivElement | undefined;
     let loading = $state(true);
@@ -205,10 +209,10 @@
     let isProjectDetailsVisible = $state(true);
     let projectSwapTimeout: ReturnType<typeof setTimeout> | undefined;
     let isGalleryOpen = $state(false);
+    let gallerySelectedIndex = $state(0);
     let galleryApi:
         | import("$lib/components/ui/carousel/context.js").CarouselAPI
         | undefined;
-    let gallerySelectedIndex = $state(0);
 
     const displayedProject = $derived(projects[displayedProjectIndex]);
     const galleryImages = $derived(displayedProject.images ?? []);
@@ -288,7 +292,7 @@
                 duration: 0.6,
                 ease: "power3.out",
                 stagger: 0.05,
-                delay: 1,
+                delay: 0.5,
                 scrollTrigger: {
                     trigger: workCarouselSection,
                     start: "top 80%",
@@ -297,6 +301,30 @@
             });
 
             trigger = animation.scrollTrigger;
+        }
+
+        if (imgWrapperRef) {
+            gsap.set(imgWrapperRef, {
+                y: 24,
+                opacity: 0,
+                scale: 0.96,
+            });
+
+            imageButtonAnimation = gsap.to(imgWrapperRef, {
+                y: 0,
+                opacity: 1,
+                scale: 1,
+                duration: 0.55,
+                ease: "power3.out",
+                paused: true,
+            });
+
+            imageButtonTrigger = ScrollTrigger.create({
+                trigger: imgWrapperRef,
+                start: "top 85%",
+                onEnter: () => imageButtonAnimation?.restart(),
+                onEnterBack: () => imageButtonAnimation?.restart(),
+            });
         }
 
         setTimeout(() => {
@@ -310,11 +338,47 @@
         return () => {
             trigger?.kill();
             animation?.kill();
+            imageButtonTrigger?.kill();
+            imageButtonAnimation?.kill();
             if (projectSwapTimeout) clearTimeout(projectSwapTimeout);
             document.body.style.overflow = "";
             window.removeEventListener("scroll", updateScrollProgress);
             window.removeEventListener("resize", updateScrollProgress);
         };
+    });
+
+    $effect(() => {
+        displayedProjectIndex;
+
+        if (!imgWrapperRef) return;
+
+        imageButtonTrigger?.kill();
+        imageButtonAnimation?.kill();
+        gsap.killTweensOf(imgWrapperRef);
+
+        gsap.set(imgWrapperRef, {
+            y: 24,
+            opacity: 0,
+            scale: 0.96,
+        });
+
+        imageButtonAnimation = gsap.to(imgWrapperRef, {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.55,
+            ease: "power3.out",
+            paused: true,
+        });
+
+        imageButtonTrigger = ScrollTrigger.create({
+            trigger: imgWrapperRef,
+            start: "top 85%",
+            onEnter: () => imageButtonAnimation?.restart(),
+            onEnterBack: () => imageButtonAnimation?.restart(),
+        });
+
+        ScrollTrigger.refresh();
     });
 
     const heroOpacity = $derived(mapRange(scrollProgress, 0, 1, 1, 0));
@@ -465,7 +529,7 @@
     </div>
 
     <div
-        class="relative z-20 flex flex-col items-center"
+        class="relative z-20 flex flex-col items-center gap-100"
         style={`
             opacity: ${contentOpacity};
             transform: translateY(${contentTranslateY}px) scale(${contentScale});
@@ -475,6 +539,7 @@
         `}
     >
         <section
+            id="about"
             class="flex min-h-screen flex-col items-center justify-center gap-5"
         >
             <div class="flex flex-col items-center gap-4">
@@ -488,10 +553,8 @@
             </div>
             <SplitReveal
                 triggerOnScroll={true}
-                delay={0.2}
-                lines.duration={0.02}
                 mode="lines"
-                class="text-left text-muted-foreground block text-lg max-w-200 font-sans px-12"
+                class="text-left text-muted-foreground text-lg max-w-200 font-sans px-12"
             >
                 Hi, I'm Yassine Akhouayri. I'm 18 years old and currently living
                 in Montreal, Canada. I’ve always been curious about how
@@ -525,7 +588,7 @@
             </SplitReveal>
         </section>
 
-        <section class="min-h-screen mt-100">
+        <section id="work" class="min-h-screen">
             <div
                 class="mx-auto flex w-full max-w-7xl flex-col gap-4 items-center"
             >
@@ -611,11 +674,16 @@
                                             </div>
 
                                             {#if i == projects.length - 1}
-                                                <Button
-                                                    class="learn-more text-sm font-medium cursor-pointer hover:bg-accent-background"
+                                                <a
+                                                    href="mailto:yassaine_akh@proton.me"
+                                                    class="learn-more inline-flex text-sm font-medium bg-background text-foreground py-2 px-5 cursor-pointer border border-border"
                                                     style="
                                                 backdrop-filter: blur(calc(var(--spacing) * 1));
-                                                "
+                                                ">Contact me</a
+                                                >
+                                                <!-- <Button
+                                                    class="learn-more text-sm font-medium cursor-pointer hover:bg-accent-background"
+
                                                     variant="outline"
                                                     onclick={() => {
                                                         window.location.href =
@@ -623,7 +691,7 @@
                                                     }}
                                                 >
                                                     Contact me
-                                                </Button>
+                                                </Button> -->
                                             {:else}
                                                 <Button
                                                     class="learn-more text-sm font-medium cursor-pointer hover:bg-accent-background"
@@ -737,19 +805,18 @@
                                 >
                                     <!-- LEFT COLUMN -->
                                     <div class="flex flex-col gap-6 lg:w-[40%]">
-                                        <SplitReveal triggerOnScroll={true}>
-                                            <button
-                                                type="button"
-                                                class="aspect-16/10 max-w-md overflow-hidden rounded-xl border border-border/60 text-left"
-                                                onclick={openGallery}
-                                            >
-                                                <img
-                                                    src={displayedProject.thumbnail2}
-                                                    alt={displayedProject.title}
-                                                    class="h-full w-full object-cover cursor-pointer"
-                                                />
-                                            </button>
-                                        </SplitReveal>
+                                        <button
+                                            type="button"
+                                            class="aspect-16/10 max-w-md overflow-hidden rounded-xl border border-border/60 text-left"
+                                            bind:this={imgWrapperRef}
+                                            onclick={openGallery}
+                                        >
+                                            <img
+                                                src={displayedProject.thumbnail2}
+                                                alt={displayedProject.title}
+                                                class="h-full w-full object-cover cursor-pointer"
+                                            />
+                                        </button>
 
                                         <div
                                             class="flex flex-wrap lg:flex-col gap-3"
@@ -832,7 +899,7 @@
             </div>
         </section>
 
-        <section class="min-h-screen mt-100">
+        <section id="tools" class="min-h-screen">
             <div class="mx-auto flex w-full max-w-7xl flex-col gap-4">
                 <div class="flex flex-col items-center gap-4">
                     <SplitReveal
@@ -890,7 +957,7 @@
             </div>
         </section>
 
-        <section class="min-h-screen mt-100">
+        <section id="contact" class="h-fit">
             <div class="mx-auto flex w-full max-w-7xl flex-col gap-4">
                 <div class="flex flex-col items-center gap-4">
                     <SplitReveal
@@ -914,16 +981,11 @@
 
                 <div class="flex justify-center items-center gap-2 mt-5">
                     <SplitReveal triggerOnScroll={true} mode="lines">
-                        <Button
-                            class="text-sm font-medium cursor-pointer"
-                            variant="default"
-                            onclick={() => {
-                                window.location.href =
-                                    "mailto:yassine_akh@proton.me";
-                            }}
+                        <a
+                            href="mailto:yassaine_akh@proton.me"
+                            class="inline-flex text-sm font-medium bg-foreground text-background py-2 px-5 cursor-pointer"
+                            >Contact me</a
                         >
-                            Contact me
-                        </Button>
                     </SplitReveal>
                     <SplitReveal triggerOnScroll={true} delay={0.1}>
                         <a
@@ -965,12 +1027,12 @@
                     </SplitReveal>
                 </div>
             </div>
-        </section>
 
-        <section
-            class="flex p-2 border-t border-border w-full items-center justify-center text-muted-foreground font-mono text-xs"
-        >
-            All rights reserved © 2026 Yassine Akhouayri
+            <div
+                class="flex p-2 border-t border-border min-w-screen items-center justify-center text-muted-foreground font-mono text-xs mt-150"
+            >
+                All rights reserved © 2026 Yassine Akhouayri
+            </div>
         </section>
     </div>
 
