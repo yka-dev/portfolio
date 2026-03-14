@@ -655,21 +655,21 @@
 
                   <!-- RIGHT COLUMN -->
                   <div class="flex flex-col gap-6 max-w-screen">
-                    <SplitReveal mode="lines" triggerOnScroll={true}>
-                      <p
-                        class="text-base leading-7 text-muted-foreground font-sans"
-                      >
-                        {displayedProject.description}
-                      </p>
+                    <SplitReveal
+                      mode="lines"
+                      triggerOnScroll={true}
+                      class="text-base text-muted-foreground font-sans"
+                    >
+                      {displayedProject.description}
                     </SplitReveal>
 
                     <div class="flex flex-col gap-3">
-                      <SplitReveal mode="chars" triggerOnScroll={true}>
-                        <h4
-                          class="text-sm font-bold font-sans tracking-[0.2em] text-muted-foreground"
-                        >
-                          Features
-                        </h4>
+                      <SplitReveal
+                        mode="chars"
+                        triggerOnScroll={true}
+                        class="text-sm font-bold font-sans tracking-[0.2em] text-muted-foreground"
+                      >
+                        Features
                       </SplitReveal>
 
                       <SplitReveal mode="lines" triggerOnScroll={true}>
@@ -683,10 +683,12 @@
                       </SplitReveal>
                     </div>
 
-                    <SplitReveal mode="lines" triggerOnScroll={true}>
-                      <p class="text-base leading-7 text-muted-foreground">
-                        {displayedProject.why}
-                      </p>
+                    <SplitReveal
+                      mode="lines"
+                      triggerOnScroll={true}
+                      class="text-base text-muted-foreground"
+                    >
+                      {displayedProject.why}
                     </SplitReveal>
                   </div>
                 </div>
