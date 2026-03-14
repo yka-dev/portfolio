@@ -14,6 +14,7 @@ import {
 } from "@lucide/svelte";
 import { base } from "$app/paths";
 import ContactThumbnail from "@/components/contact-thumbnail.svelte";
+import { SiGoland, SiGsap, SiHttpie, SiPostgresql, SiReact, SiRedis, SiSvelte, SiTailwindcss, SiTypescript } from "@icons-pack/svelte-simple-icons";
 
 const projects = [
   {
@@ -43,20 +44,21 @@ const projects = [
         src: `${base}/work/portfolio/3.png`,
       },
     ],
-    shortDescription: "My personnal website",
+    shortDescription: "Personal developer portfolio built with SvelteKit.",
     description:
-      "A personal site that showcases my work, experiments, and background through an interface focused on motion, typography, and clarity.",
+      "A personal portfolio website built with SvelteKit to showcase my projects, experiments, and technical work. The site focuses on clear presentation, smooth navigation, and a structured way to explore the projects I have built.",
     features: [
-      "Responsive landing page with immersive animated sections",
-      "Project carousel with a detailed project presentation area",
-      "Smooth scroll-driven transitions and reveal animations",
+      "Project showcase with detailed project pages",
+      "Responsive layout designed for desktop and mobile devices",
+      "Image and media gallery for presenting project visuals",
+      "Structured sections for projects, tools, and contact",
     ],
-    why: "I built this portfolio to create a place where I could present my projects in a way that feels personal and visually engaging while also experimenting with interface design, motion, and front-end architecture.",
+    why: "I built this portfolio to have a central place where I can present my projects and technical work, while also experimenting with modern front-end frameworks and interface design.",
     techStack: [
-      { name: "SvelteKit", icon: Braces },
-      { name: "TypeScript", icon: FileCode2 },
-      { name: "Tailwind CSS", icon: Wind },
-      { name: "GSAP", icon: Zap },
+      { name: "SvelteKit", icon: SiSvelte },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+      { name: "GSAP", icon: SiGsap },
     ],
     links: [
       {
@@ -94,20 +96,27 @@ const projects = [
         src: `${base}/work/measurely/1.png`,
       },
     ],
-    shortDescription: "Analytics website",
+    shortDescription:
+      "Open-source analytics platform for tracking and visualizing metrics.",
     description:
-      "A concept project centered on clean interfaces and practical user flows for viewing and managing measurements in a clear and intuitive way.",
+      "Measurely is an open-source analytics platform designed to make tracking, analyzing, and visualizing metrics simple. It provides developers with customizable metric types, real-time insights, and an API-first integration model, allowing applications to send and explore metrics while maintaining full control over their data.",
     features: [
-      "Structured dashboard-style layout for organizing information",
-      "Simple and readable interface focused on usability",
-      "Component-based architecture for scalable UI development",
+      "Developer-friendly API with API key authentication",
+      "Real-time metric monitoring and dashboard visualization",
+      "Custom metric types including basic metrics and dual metrics",
+      "Advanced configuration options such as offsets and custom tracking periods",
+      "Customizable visualization blocks for charts and tables",
+      "Team collaboration with role-based permissions",
+      "SDK support for JavaScript/TypeScript, Go, and Python",
     ],
-    why: "I built Measurely to explore how thoughtful interface structure and interaction design can make technical or data-heavy information feel much easier to navigate.",
+    why: "I built Measurely to explore how analytics systems are designed and to create a developer-focused platform where collecting and visualizing application metrics is simple, flexible, and fully controllable.",
     techStack: [
-      { name: "SvelteKit", icon: Braces },
-      { name: "TypeScript", icon: FileCode2 },
-      { name: "Tailwind CSS", icon: Wind },
-      { name: "Analytics", icon: ChartNoAxesCombined },
+      { name: "TypeScript", icon: SiTypescript},
+      { name: "Golang", icon: SiGoland},
+      { name: "React", icon: SiReact },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+      { name: "Postgresql", icon: SiPostgresql},
+      { name: "Redis", icon: SiRedis},
     ],
     links: [
       {
@@ -140,20 +149,22 @@ const projects = [
         src: `${base}/work/cpp_/video2.mp4`,
       },
     ],
-    shortDescription: "Vscode extension",
+    shortDescription:
+      "VS Code extension for building multi-file C and C++ projects.",
     description:
-      "A project focused on sharpening my understanding of lower-level programming concepts and problem solving through C++ practice and experimentation.",
+      "CPP_ is a Visual Studio Code extension that simplifies building C and C++ projects. It automatically discovers all source files in a project and compiles them using configurable build settings. The extension supports multiple application types, customizable compiler options, and parallel compilation to reduce build times.",
     features: [
-      "Hands-on exploration of core C++ language concepts",
-      "Practice-oriented implementation of algorithms and logic",
-      "Focus on writing efficient and structured code",
+      "Automatic discovery and compilation of multi-file C and C++ projects",
+      "Support for executables, dynamic libraries (DLL), and static libraries",
+      "Configurable include paths, library directories, libraries, and preprocessors",
+      "Debug and Release build modes with configurable optimization levels",
+      "Parallel compilation for faster builds",
+      "Compilation history system to avoid recompiling unchanged files",
+      "Commands to compile, recompile, run, and configure projects directly from VS Code",
     ],
-    why: "I built this project as a way to strengthen my foundations in programming by working closer to the language itself, improving both my problem-solving approach and my understanding of performance-oriented code.",
+    why: "I built this extension to simplify the process of compiling multi-file C and C++ projects in Visual Studio Code and automate the configuration typically required when working with larger C++ codebases.",
     techStack: [
-      { name: "C++", icon: Cpu },
-      { name: "STL", icon: Boxes },
-      { name: "Algorithms", icon: Zap },
-      { name: "Data Structures", icon: Braces },
+      { name: "TypeScript", icon: SiTypescript },
     ],
     links: [
       {
@@ -163,7 +174,8 @@ const projects = [
       },
       {
         label: "Vscode Marketplace",
-        href: "https://marketplace.visualstudio.com/items?itemName=bleastProgram.CPP-Compiler",
+        href:
+          "https://marketplace.visualstudio.com/items?itemName=bleastProgram.CPP-Compiler",
         icon: Globe,
       },
     ],

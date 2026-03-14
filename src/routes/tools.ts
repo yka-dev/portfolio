@@ -1,3 +1,4 @@
+import { SiAnthropic, SiC, SiCloudflare, SiCplusplus, SiGhostty, SiGithubcopilot, SiGoland, SiGsap, SiJavascript, SiNextdotjs, SiOpenaigym, SiPostgresql, SiPosthog, SiPython, SiReact, SiRedis, SiRemix, SiSupabase, SiSvelte, SiTailwindcss, SiTypeform, SiTypescript, SiVsco, SiVscodium, SiZedindustries, SiZig } from "@icons-pack/svelte-simple-icons";
 import {
   Code,
   FileCode2,
@@ -7,50 +8,45 @@ import {
   Github,
   Cpu,
   Server,
-} from "@lucide/svelte"; // example icons
-// import ZedIcon from "path-to-icons/Zed"; // replace with actual icon
-// import R2Icon from "path-to-icons/R2"; // Cloudflare R2
-// import SupabaseIcon from "path-to-icons/Supabase"; // Supabase
-// import PostgresIcon from "path-to-icons/Postgres"; // PostgreSQL
-// import SolanaIcon from "path-to-icons/Solana"; // Solana blockchain
+} from "@lucide/svelte"; 
 
 const tools = [
   {
     category: "Programming Languages",
     items: [
       {
-        icon: Code,
+        icon: SiPython,
         name: "Python",
         desc: "Versatile language for automation, data, and backend development",
       },
       {
-        icon: Code,
+        icon: SiC,
         name: "C",
         desc: "Low-level language for systems programming and performance-critical code",
       },
       {
-        icon: Code,
+        icon: SiCplusplus,
         name: "C++",
         desc: "Extension of C with object-oriented and generic programming features",
       },
       {
-        icon: Code,
+        icon: SiZig,
         name: "Zig",
         desc: "Modern low-level systems programming language with safety features",
       },
       {
-        icon: Code,
+        icon: SiJavascript,
         name: "JavaScript",
         desc: "Dynamic scripting for interactive web applications",
       },
       {
-        icon: FileCode2,
+        icon: SiTypescript,
         name: "TypeScript",
         desc: "Typed superset of JavaScript for safer and scalable code",
       },
       {
-        icon: Code,
-        name: "Go",
+        icon: SiGoland,
+        name: "Golang",
         desc: "Compiled language for efficient backend and concurrent systems",
       },
     ],
@@ -59,87 +55,102 @@ const tools = [
     category: "Frameworks & Libraries",
     items: [
       {
-        icon: Wind,
+        icon: SiSvelte,
         name: "SvelteKit",
         desc: "Svelte framework for building reactive full-stack apps",
       },
       {
-        icon: Zap,
+        icon: SiReact,
         name: "React",
         desc: "Library for declarative user interface components",
       },
       {
-        icon: Globe,
+        icon: SiNextdotjs,
         name: "Next.js",
         desc: "React framework for server-side rendered and static apps",
+      },
+      {
+        icon: SiRemix,
+        name: "Remix",
+        desc: "Full-stack web framework focused on web fundamentals and modern UX",
+      },
+      {
+        icon: SiTailwindcss,
+        name: "Tailwind CSS",
+        desc: "Utility-first CSS framework for rapid UI development",
+      },
+      {
+        icon: SiGsap,
+        name: "Gsap",
+        desc: "Professional-grade JavaScript animation library for high-performance motion",
       },
     ],
   },
   {
     category: "Coding Environments",
     items: [
-      // {
-      //   icon: Github,
-      //   name: "Git",
-      //   desc: "Distributed version control for managing source code",
-      // },
-      // {
-      //   icon: ZedIcon,
-      //   name: "Zed",
-      //   desc: "Fast and modern code editor for minimalistic workflow",
-      // },
-      // {
-      //   icon: Code,
-      //   name: "VS Code",
-      //   desc: "Extensible editor with powerful development tools",
-      // },
-      // {
-      //   icon: Cpu,
-      //   name: "Terminal",
-      //   desc: "Command-line interface for system operations",
-      // },
+      {
+        icon: Github,
+        name: "Git",
+        desc: "Distributed version control for managing source code",
+      },
+      {
+        icon: SiZedindustries,
+        name: "Zed",
+        desc: "Fast and modern code editor for minimalistic workflow",
+      },
+      {
+        icon: SiGhostty,
+        name: "Ghostty",
+        desc: "High-performance, GPU-accelerated terminal emulator",
+      },
     ],
   },
   {
     category: "Databases & Storage",
     items: [
-      // {
-      //   icon: PostgresIcon,
-      //   name: "PostgreSQL",
-      //   desc: "Powerful relational database for structured data",
-      // },
-      // {
-      //   icon: SupabaseIcon,
-      //   name: "Supabase",
-      //   desc: "Backend-as-a-Service with auth, database, and real-time features",
-      // },
-      // {
-      //   icon: R2Icon,
-      //   name: "Cloudflare R2",
-      //   desc: "S3-compatible object storage for scalable file storage",
-      // },
+      {
+        icon: SiPostgresql,
+        name: "PostgreSQL",
+        desc: "Powerful relational database for structured data",
+      },
+      {
+        icon: SiSupabase,
+        name: "Supabase",
+        desc: "Backend-as-a-Service with auth, database, and real-time features",
+      },
+      {
+        icon: SiCloudflare,
+        name: "Cloudflare R2",
+        desc: "S3-compatible object storage for scalable file storage",
+      },
+      {
+        icon: SiRedis,
+        name: "Redis",
+        desc: "In-memory data store for caching and real-time performance",
+      },
     ],
   },
   {
     category: "Analytics & AI Tools",
     items: [
       {
-        icon: Globe,
+        icon: SiPosthog,
         name: "PostHog",
         desc: "Open-source analytics for tracking user behavior",
       },
       {
-        icon: Code,
+        icon: SiOpenaigym,
         name: "OpenAI API",
         desc: "Generative AI for chatbots, text generation, and automation tasks",
       },
       {
-        icon: Code,
+        icon: SiAnthropic,
         name: "Claude AI",
         desc: "AI assistant for advanced reasoning and text analysis",
       },
       {
-        icon: Code,
+        icon: SiGithubcopilot,
         name: "GitHub Copilot",
         desc: "AI code completion and pair programming assistant",
       },

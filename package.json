@@ -31,6 +31,7 @@
 		"vite": "^7.3.1"
 	},
 	"dependencies": {
+		"@icons-pack/svelte-simple-icons": "^7.1.0",
 		"@sveltejs/adapter-node": "^5.5.4",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@threlte/core": "^8.3.1",
